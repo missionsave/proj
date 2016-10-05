@@ -30,20 +30,30 @@ echo '<link rel="shortcut icon" href="icon.ico">';
 
 $entityBody = file_get_contents('php://input');
 
+//echo $_POST["p"] ;
+
 //$local=Locale::getDefault();
 if(@$_POST["p"] ==""){
+$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+	//echo $lang;
+	if($lang=="pt"){
+		
+	$_SESSION['lg']=0;
+	$_SESSION['lgl']="pt";	
+	}
 //if($local=="pt_PT"||$local=="pt_BR"){
 //	$_SESSION['lg']=0;
 //	$_SESSION['lgl']="pt";
-//}else{
+else{
 	$_SESSION['lg']=1;
 	$_SESSION['lgl']="en";	
+}
 }
 if(@$_POST["p"] =="lg0"){
 	$_SESSION['lg']=0;
 	$_SESSION['lgl']="pt";
 }
-if(@$_POST["p"] =="lg1" ||@$_POST["p"] ==""){
+if(@$_POST["p"] =="lg1"){ // ||@$_POST["p"] ==""){
 	$_SESSION['lg']=1;
 	$_SESSION['lgl']="en";
 }
