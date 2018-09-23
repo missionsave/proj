@@ -1,6 +1,25 @@
 ﻿<?php
+
+echo '<meta http-equiv="cache-control" content="no-cache, must-revalidate, post-check=0, pre-check=0" />
+  <meta http-equiv="cache-control" content="max-age=0" />
+  <meta http-equiv="expires" content="0" />
+  <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+  <meta http-equiv="pragma" content="no-cache" />';
+
 session_set_cookie_params(3600000,"/");
 session_start(); 
+ 
+        header("Cache-Control: no-cache");
+
+        echo '<script>
+            var sse = new EventSource("index.php");
+            sse.onmessage = function(event) {
+                document.write(event.data);
+            }
+        </script>';
+
+
+
 require 'dict.php';
 require 'css.html';
 
@@ -26,6 +45,9 @@ function styleImg($style,$img){
 }
 
 echo '<?xml version="1.0" encoding="UTF-8"?>';
+  
+
+
 echo '<link rel="shortcut icon" href="icon.ico">';
 
  
@@ -115,6 +137,8 @@ echo '</div>';
 //	echo '<iframe title="YouTube video player" class="youtube-player" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/QZ-5ADFl6WQ" frameborder="0" allowFullScreen></iframe>';
  
 
-
+ 
+            flush();
+         
 
 ?>
