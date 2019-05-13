@@ -28,7 +28,7 @@ function styleButton($style,$text,$sel){
     $html_str .= "<input style='display:none;' name='pg' type='text' value='".$style."' >";
     $html_str .= "<input type='hidden' name='l'  value='".$_GET["l"]."' >";
     if($sel)
-		$html_str .= "<input id='view_button' type='submit' style='font-size:20px; background-color: #4CAF50; height:50px' value='".$text."' >";
+		$html_str .= "<input id='view_button' type='submit' style='font-size:20px; background-color: #00378D; color: #FFC60D; height:50px' value='".$text."' >";
 	else
     	$html_str .= "<input id='view_button' type='submit' style='font-size:20px;  height:50px' value='".$text."' >";		
     $html_str .= "</form>";
