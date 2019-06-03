@@ -201,11 +201,10 @@ htr {
 }
 
 </style>
-<title>Foundation Mission Save</title>
 </head>
 <body>
 <section id="htr">
-<?php $indexp="index.php" ?>
+<?php $indexp="indexr2.php" ?>
 <div class="topnav" id="myTopnav">
   <a href="#home" class="active">Foundation Mission Save</a>
   

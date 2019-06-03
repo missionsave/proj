@@ -201,26 +201,16 @@ htr {
 }
 
 </style>
-<title>Foundation Mission Save</title>
 </head>
 <body>
 <section id="htr">
-<?php $indexp="index.php" ?>
 <div class="topnav" id="myTopnav">
   <a href="#home" class="active">Foundation Mission Save</a>
+  <a href="#news">Unidade de batata doce</a>
+  <a href="#contact">Doar (1400 salva 1)</a>
   
-  <a href="	<?php echo  $indexp.'?pg=descritiva_';	?>  "><?php echo $dupa[$lg];?></a>
-  
-  
-  <a href="	<?php echo  $indexp.'?pg=estrategia_';	?>  "><?php echo $dest[$lg];?></a>
-  <a href="	<?php echo  $indexp.'?pg=voluntariado_';	?>  "><?php echo $dvol[$lg];?></a>
-  <a href="	<?php echo  $indexp.'?pg=donate_';	?>  "><?php echo $doar[$lg];?></a>
-  <a href="	<?php echo  $indexp.'?pg=develop_';	?>  "><?php echo $dev[$lg];?></a> 
-  
-
-<!--
   <div class="dropdown">
-    <button class="dropbtn"> <?php echo $dest[$lg];?>
+    <button class="dropbtn">Dropdown 
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
@@ -228,10 +218,20 @@ htr {
       <a href="#">Link 2</a>
       <a href="#">Link 3</a>
     </div>
+  </div>  
+  
+  <div class="dropdown">
+    <button class="dropbtn">Dropdown1 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="#">Link 11</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
   </div> 
---> 
- 
- 
+  
+  <a href="#about">About</a>
   <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 </div>
 </section>
@@ -247,9 +247,7 @@ $file= $_GET["pg"].$dlg[$lg].".xhtml";
 $filestr = file_get_contents($file, true);
 
 $filestr = str_replace('<?xml version="1.0" encoding="UTF-8"?>','',$filestr);
-
-$filestr = str_replace('<a href="http://www.youtube.com/embed/QZ-5ADFl6WQ" class="Internet_20_link">http://www.youtube.com/embed/QZ-5ADFl6WQ</a>','<iframe title="YouTube video player" class="youtube-player" type="text/html" width="100%" height="390" src="http://www.youtube.com/embed/QZ-5ADFl6WQ" frameborder="0" allowFullScreen></iframe>',$filestr);
-
+$filestr = str_replace('<a href="http://www.youtube.com/embed/QZ-5ADFl6WQ" class="Internet_20_link">http://www.youtube.com/embed/QZ-5ADFl6WQ</a>','<iframe title="YouTube video player" class="youtube-player" type="text/html" width="640" height="390" src="http://www.youtube.com/embed/QZ-5ADFl6WQ" frameborder="0" allowFullScreen></iframe>',$filestr);
 $filestr = str_replace('position:relative;','',$filestr);
 $filestr = str_replace('$doar','<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top"><input type="hidden" name="cmd" value="_donations"><input type="hidden" name="business" value="danielchanfana@gmail.com"><input type="hidden" name="lc" value="PT"><input type="hidden" name="item_name" value="Foundation Mission Save"><input type="hidden" name="no_note" value="0"><input type="hidden" name="currency_code" value="EUR"><input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest"><input type="image" src="https://www.paypalobjects.com/pt_PT/PT/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - A forma mais fácil e segura de efetuar pagamentos online!"><img alt="" border="0" src="https://www.paypalobjects.com/pt_PT/i/scr/pixel.gif" width="1" height="1"></form>',$filestr);
 $filestr = str_replace('$donate','<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top"><input type="hidden" name="cmd" value="_donations"><input type="hidden" name="business" value="danielchanfana@gmail.com"><input type="hidden" name="lc" value="US"><input type="hidden" name="item_name" value="Foundation Mission Save"><input type="hidden" name="no_note" value="0"><input type="hidden" name="currency_code" value="EUR"><input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest"><input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"><img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"></form>',$filestr);
