@@ -117,6 +117,13 @@ function amountFunction() {
 }
 </script>
 
+<form action="fh.php" method="post" enctype="multipart/form-data">
+    Envie o seu CV:
+    <input type="file" name="fileToUpload" id="fileToUpload">
+    <input type="submit" value="Upload Image" name="submit">
+</form>
+
+
 <?php
 echo "<h2 id='formi'>Your Input:</h2>";
 echo $name;
