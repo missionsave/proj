@@ -67,10 +67,10 @@ if(isset($_POST['submit'])){
 ?>
 
 
-<article>
-<p id="jobsid" >
-Estão abertas vagas para estagiários com hipótese de permanência posterior.</p><br><br>
-<b>Faça a sua inscrição aqui:</b></article> <br>
+
+<p id="jobsid">
+Estão abertas vagas para estagiários com hipótese de permanência posterior.<br><br>
+<b>Faça a sua inscrição aqui:</b> <br>
 <div  style="border-style: solid; padding:10px; <?php if( $postOk )echo 'display: none;'; ?> ">
 
 	<form action="<?php echo htmlspecialchars($indexp.'?pg=jobs#jobsid');?>" method="post" enctype="multipart/form-data">
@@ -94,7 +94,7 @@ Estão abertas vagas para estagiários com hipótese de permanência posterior.<
 		
 		Categoria:
 		<select name="job" required="required">
-			<option disabled selected value> -- selecione -- </option>
+			<option disabled selected value> -- select an option -- </option>
 			<option>Engenheiro informático</option>
 			<option value="engelect">Engenheiro eletrónico</option>
 			<option value="engmec">Engenheiro mecânico</option>
@@ -130,7 +130,7 @@ window.onload = function() {
 	//fill year
 	var start = new Date().getFullYear()-65;
 	var end = new Date().getFullYear()-18;
-	var options = "<option disabled selected value> -- selecione -- </option>";
+	var options = "<option disabled selected value> -- select -- </option>";
 	for(var year = end ; year >start; year--){
 	  options += "<option>"+ year +"</option>";
 	}
@@ -197,8 +197,8 @@ function fileupload($prefix){
 <?php
 if( $postOk ){
 	echo "<h2>Obrigado pela sua inscrição</h2>";
-	$data= date('Y-m-d_H_i_s ');
-	$datai=date('Y-m-d H:i:s');
+	$data= date('Y-m-d_H_m_s ');
+	$datai=date('Y-m-d H:m:s');
 	$target_file=fileupload($data.$_POST['name']." "); 
 	// echo $_POST['name'].'<br>';
 	// echo $_POST['email'].'<br>';
@@ -246,7 +246,7 @@ if( $postOk ){
 		 
 		$stmt = $db -> prepare($sql);
 		$stmt -> execute();
-		echo "O seu registo está agora alterado.";
+		echo "O seu registo está agora alterado";
 	}
 
 }

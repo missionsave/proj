@@ -67,10 +67,10 @@ if(isset($_POST['submit'])){
 ?>
 
 
-<article>
-<p id="jobsid" >
-Estão abertas vagas para estagiários com hipótese de permanência posterior.</p><br><br>
-<b>Faça a sua inscrição aqui:</b></article> <br>
+
+<p id="jobsid">
+Estão abertas vagas para estagiários com hipótese de permanência posterior.<br><br>
+<b>Faça a sua inscrição aqui:</b> <br>
 <div  style="border-style: solid; padding:10px; <?php if( $postOk )echo 'display: none;'; ?> ">
 
 	<form action="<?php echo htmlspecialchars($indexp.'?pg=jobs#jobsid');?>" method="post" enctype="multipart/form-data">
@@ -94,7 +94,7 @@ Estão abertas vagas para estagiários com hipótese de permanência posterior.<
 		
 		Categoria:
 		<select name="job" required="required">
-			<option disabled selected value> -- selecione -- </option>
+			<option disabled selected value> -- select an option -- </option>
 			<option>Engenheiro informático</option>
 			<option value="engelect">Engenheiro eletrónico</option>
 			<option value="engmec">Engenheiro mecânico</option>
@@ -130,7 +130,7 @@ window.onload = function() {
 	//fill year
 	var start = new Date().getFullYear()-65;
 	var end = new Date().getFullYear()-18;
-	var options = "<option disabled selected value> -- selecione -- </option>";
+	var options = "<option disabled selected value> -- select -- </option>";
 	for(var year = end ; year >start; year--){
 	  options += "<option>"+ year +"</option>";
 	}
@@ -147,7 +147,6 @@ function storedata() {
 <?php
  
 function fileupload($prefix){
-	if(basename($_FILES["fileToUpload"]["name"])=="")return "";
 	$target_dir = "uploads/";
 	$target_file = $target_dir .$prefix.basename($_FILES["fileToUpload"]["name"]);
 	//$target_file = $target_dir . "test";
@@ -197,31 +196,21 @@ function fileupload($prefix){
 <?php
 if( $postOk ){
 	echo "<h2>Obrigado pela sua inscrição</h2>";
-	$data= date('Y-m-d_H_i_s ');
-	$datai=date('Y-m-d H:i:s');
-	$target_file=fileupload($data.$_POST['name']." "); 
-	// echo $_POST['name'].'<br>';
-	// echo $_POST['email'].'<br>';
-	// echo $_POST['phone'].'<br>';
-	// echo $_POST['year'].'<br>';
-	// echo $_POST['job'].'<br>';
-	// echo $_POST['presentention'].'<br>';
-	// echo '<a href="'.$target_file.'">'.$target_file.'</a><br>';
-	//$target_file= '<a href="'.$target_file.'">'.$target_file.'</a><br>';
+	$data= date('Y-m-d H_m_s ');
+	$datai=date('Y-m-d H:m:s');
+	$target_file=fileupload($data.$_POST['name']); 
+	echo $_POST['name'].'<br>';
+	echo $_POST['email'].'<br>';
+	echo $_POST['phone'].'<br>';
+	echo $_POST['year'].'<br>';
+	echo $_POST['job'].'<br>';
+	echo $_POST['presentention'].'<br>';
+	echo '<a href="'.$target_file.'">'.$target_file.'</a><br>';
+	
+	$$_POST['name'];
 	
 	
 	$db = new PDO("sqlite:"."db.sqlite");
-	
-	$sql="CREATE TABLE IF NOT EXISTS fund (
-	 cid INTEGER PRIMARY KEY,
-	 name TEXT NOT NULL,
-	 email TEXT NOT NULL UNIQUE,
-	 amount INTEGER NOT NULL,
-	 comment BLOB
-	);";
-	$db->query($sql);
-
-	
 	$sql="CREATE TABLE IF NOT EXISTS tabJobs (
 	 cid INTEGER PRIMARY KEY,
 	 date TEXT NOT NULL,
@@ -231,23 +220,20 @@ if( $postOk ){
 	 year INTEGER NOT NULL,
 	 job TEXT NOT NULL,
 	 presentention TEXT NOT NULL,
-	 cv TEXT
+	 cv TEXT,
 	);";
 	$db->query($sql);
 	
 	
-	$sql="insert into tabJobs (date,name,email,phone,year,job,presentention,cv) values('".$datai."','".$_POST['name']."','".$_POST['email']."','".$_POST['phone']."','".$_POST['year']."','".$_POST['job']."','".$_POST['presentention']."','".$target_file."')";
-  
-	$stmt = $db -> prepare($sql);
-	if( $stmt -> execute() ){
-		echo "O seu registo está agora na nossa base de dados.";
-	}else{
-		$sql="update tabJobs set date='".$datai."',name='".$_POST['name']."',cv='".$target_file."',phone='".$_POST['phone']."',year='".$_POST['year']."',job='".$_POST['job']."',presentention='".$_POST['presentention']."' where email like '".$_POST['email']."'";
-		 
-		$stmt = $db -> prepare($sql);
-		$stmt -> execute();
-		echo "O seu registo está agora alterado.";
-	}
+$stmt = $db -> prepare("insert into fund (date,name,email,phone,year,job,presentention,cv)
+values('".$datai."','".$_POST['name']."','".$_POST['email']."','".$$_POST['phone']."','".$_POST['year']."','".$_POST['job']."','".$_POST['presentention']."','".$target_file."')");
+if( $stmt -> execute() ){
+	echo "Row Inserted";
+}else{
+	$stmt = $db -> prepare("update fund set name='".$name."',amount='".$amount."',comment='".$comment."' where email like '".$email."'");
+	echo $stmt -> execute();
+	echo "<br>alterado<br>";
+}
 
 }
 ?>

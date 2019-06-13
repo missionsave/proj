@@ -72,7 +72,7 @@ document.write(event.data);
 	if( $_GET["pg"]=="develop")$stitle=$dev[$lg];       
 ?>
 
-<title>Mission Save <?php echo @$stitle; ?></title>
+<title>Better Planet Mission <?php echo @$stitle; ?></title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 
@@ -205,7 +205,7 @@ margin-right: 1em;
 	margin:10px auto;
 	font-family:Arial; 
     color:black;
-    text-align:justify;
+    text-align:left;
 	padding-left:10px;
 	padding-right:10px;
 	    
@@ -228,7 +228,7 @@ margin-right: 1em;
 <body  onresize="onresizeFunction()">		
 <div class="topheader" id="topheaderid">
 <div class="topnav" id="myTopnav">
-	<a href="	<?php echo  $indexp.'?pg=home'.'_&l='.$lg;	?>" class="active">Mission Save</a>
+	<a href="	<?php echo  $indexp.'?pg=home'.'_&l='.$lg;	?>" class="active">Better Planet Mission</a>
   
 	<a href="	<?php echo  $indexp.'?pg=descritiva'.'&l='.$lg;	?>  "><?php echo $ufp[$lg];?></a>
   
@@ -279,17 +279,8 @@ function onresizeFunction(){
  
  
 <div  align="center" class="htr" <?php 	if( $_GET["pg"]=="plan") echo 'style="min-width:500px"'; ?> >
-
- <?php 
-
-$file= $_GET["pg"]."_".$dlg[$lg].".xhtml";
-if(!file_exists($file))$file= "home_".$dlg[$lg].".xhtml";
-
-if( $_GET["pg"]=="fund"){
-	require	"fund.php";
-	$file="";
-}
-if($file!=""){
+<?php //filter htmltext
+function filterHtmlShow($file){
 	$filestr = file_get_contents($file, true);
 
 	$filestr = str_replace('<?xml version="1.0" encoding="UTF-8"?>','',$filestr);
@@ -298,6 +289,13 @@ if($file!=""){
 	$filestr = str_replace('height:6.666cm;width:8.888cm; padding:0;  float:left;','',$filestr);
 	
 	$filestr = str_replace('margin-left:2cm; margin-right:2cm;','',$filestr);
+	
+	$filestr = str_replace('<html>','',$filestr);
+	$filestr = str_replace('</html>','',$filestr);
+	
+	$filestr = str_replace('<body>','',$filestr);
+	$filestr = str_replace('</body>','',$filestr);
+	
 	
 	$filestr = str_replace('font-size:x-small','',$filestr);
 	
@@ -309,10 +307,26 @@ if($file!=""){
 	$filestr = str_replace('$doar','<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top"><input type="hidden" name="cmd" value="_donations"><input type="hidden" name="business" value="danielchanfana@gmail.com"><input type="hidden" name="lc" value="PT"><input type="hidden" name="item_name" value="Mission Save"><input type="hidden" name="no_note" value="0"><input type="hidden" name="currency_code" value="EUR"><input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest"><input type="image" src="https://www.paypalobjects.com/pt_PT/PT/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - A forma mais fácil e segura de efetuar pagamentos online!"><img alt="" border="0" src="https://www.paypalobjects.com/pt_PT/i/scr/pixel.gif" width="1" height="1"></form>',$filestr);
 	$filestr = str_replace('$donate','<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top"><input type="hidden" name="cmd" value="_donations"><input type="hidden" name="business" value="danielchanfana@gmail.com"><input type="hidden" name="lc" value="US"><input type="hidden" name="item_name" value="Mission Save"><input type="hidden" name="no_note" value="0"><input type="hidden" name="currency_code" value="EUR"><input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest"><input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"><img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"></form>',$filestr);
 	echo $filestr; 
+	
+}
+?>
+ <?php 
+
+$file= $_GET["pg"]."_".$dlg[$lg].".xhtml";
+if(!file_exists($file))$file= "home_".$dlg[$lg].".xhtml";
+
+if( $_GET["pg"]=="fund"){
+	require	"fund.php";
+	$file="";
+}
+if($file!=""){
+	filterHtmlShow($file);
 }
 
-if( $_GET["pg"]=="jobs") require "jobs.php";
-
+if( $_GET["pg"]=="jobs"){
+	require "jobs.php";
+	filterHtmlShow("jobsfoot_".$dlg[$lg].".xhtml");
+}
 ?>
 
 </div>
