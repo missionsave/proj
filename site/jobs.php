@@ -75,11 +75,11 @@ Estão abertas vagas para estagiários com hipótese de permanência posterior.<
 
 	<form action="<?php echo htmlspecialchars($indexp.'?pg=jobs#jobsid');?>" method="post" enctype="multipart/form-data">
 		 
-		 Nome: <input type="text" name="name" size="30" required="required" value="<?php echo @$name;?>">
+		 Nome: <input type="text" name="name" size="25" required="required" value="<?php echo @$name;?>">
 		 <span class="error">* <?php echo @$nameErr;?></span>
 		 <br><br>
 		 
-		 E-mail: <input type="text" name="email" size="30" required="required" value="<?php echo @$email;?>">
+		 E-mail: <input type="text" name="email" size="25" required="required" value="<?php echo @$email;?>">
 		 <span class="error">* <?php echo @$emailErr;?></span>
 		 <br><br>
 	
@@ -95,7 +95,7 @@ Estão abertas vagas para estagiários com hipótese de permanência posterior.<
 		Categoria:
 		<select name="job" required="required">
 			<option disabled selected value> -- selecione -- </option>
-			<option>Engenheiro informático</option>
+			<option value="enginfor">Engenheiro informático</option>
 			<option value="engelect">Engenheiro eletrónico</option>
 			<option value="engmec">Engenheiro mecânico</option>
 			<option value="engagro">Engenheiro agrónomo</option>
@@ -197,9 +197,9 @@ function fileupload($prefix){
 <?php
 if( $postOk ){
 	echo "<h2>Obrigado pela sua inscrição</h2>";
-	$data= date('Y-m-d_H_i_s ');
 	$datai=date('Y-m-d H:i:s');
-	$target_file=fileupload($data.$_POST['name']." "); 
+	// $data= date('Y-m-d_H_i_s ');
+	// $target_file=fileupload($data.$_POST['name']." "); 
 	// echo $_POST['name'].'<br>';
 	// echo $_POST['email'].'<br>';
 	// echo $_POST['phone'].'<br>';
@@ -236,19 +236,34 @@ if( $postOk ){
 	$db->query($sql);
 	
 	
-	$sql="insert into tabJobs (date,name,email,phone,year,job,presentention,cv) values('".$datai."','".$_POST['name']."','".$_POST['email']."','".$_POST['phone']."','".$_POST['year']."','".$_POST['job']."','".$_POST['presentention']."','".$target_file."')";
+	$sql="insert into tabJobs (date,name,email,phone,year,job,presentention) values('".$datai."','".$_POST['name']."','".$_POST['email']."','".$_POST['phone']."','".$_POST['year']."','".$_POST['job']."','".$_POST['presentention']."')";
   
 	$stmt = $db -> prepare($sql);
 	if( $stmt -> execute() ){
 		echo "O seu registo está agora na nossa base de dados.";
 	}else{
-		$sql="update tabJobs set date='".$datai."',name='".$_POST['name']."',cv='".$target_file."',phone='".$_POST['phone']."',year='".$_POST['year']."',job='".$_POST['job']."',presentention='".$_POST['presentention']."' where email like '".$_POST['email']."'";
+		$sql="update tabJobs set date='".$datai."',name='".$_POST['name']."',phone='".$_POST['phone']."',year='".$_POST['year']."',job='".$_POST['job']."',presentention='".$_POST['presentention']."' where email like '".$_POST['email']."'";
 		 
 		$stmt = $db -> prepare($sql);
 		$stmt -> execute();
 		echo "O seu registo está agora alterado.";
 	}
+	
+	$sql="SELECT * FROM tabJobs where email like '".$_POST['email']."'";
+	$stmt = $db->prepare($sql);
+	$stmt -> execute();
+	$list = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$cid;
+	foreach ($list as $row => $col) {
+	  $cid= $col['cid'] ;
+	  break;
+	} 
+	$target_file=fileupload($cid." "); 
+	$sql="update tabJobs set  cv='".$target_file."' where email like '".$_POST['email']."'";
+	$stmt = $db -> prepare($sql);
+	$stmt -> execute();
 
+ 
 }
 ?>
 

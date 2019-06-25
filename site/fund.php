@@ -94,7 +94,7 @@ Esta pre inscriçao funciona tipo uma sondagem
   E-mail: <input type="text" name="email"  value="<?php echo $email;?>">
   <span class="error">* <?php echo $emailErr;?></span>
   <br><br>
-  amount a investir: <input id="amount" type="number" min="10" style="width: 100px; text-align: right;" required="required" onchange="amountFunction()"  name="amount" value="<?php echo $amount;?>">
+  amount a investir: <input id="amount" type="number" min="10" step="10" style="width: 100px; text-align: right;" required="required" onchange="amountFunction()"  name="amount" value="<?php echo $amount;?>">
   <label >€</label> <span class="error"><?php echo $amountErr;?></span>
   <p id="demo"></p>
   <br><br>
@@ -113,7 +113,7 @@ Esta pre inscriçao funciona tipo uma sondagem
 function amountFunction() {
   var x = document.getElementById("amount").value;
   if(x<10){x=10; document.getElementById("amount").value=10;}
-  document.getElementById("demo").innerHTML = "You selected: " + Math.round(x*1.3)+"€";
+  document.getElementById("demo").innerHTML = "Retorno: " + Math.round(x*1.3)+"€";
 }
 </script>
 

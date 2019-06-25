@@ -25,6 +25,7 @@ $dlg = array("pt", "en");
 
 $dini = array("Inicio", "Home");
 $ufp = array("Unidade de produção alimentar", "Unit of food production");
+$orc = array("Orçamento", "Budget");
 $jobs = array("Trabalho", "Jobs");
 $strat = array("Estratégia", "Strategy");
 $contact = array("Contacto", "Contact");
@@ -52,7 +53,7 @@ $lg=$_GET["l"];
 
 
 if(@$_GET["pg"]=="") {
-	$_GET["pg"]="home_"; 	
+	$_GET["pg"]="home"; 	
 }
 ?>
 <script>
@@ -69,7 +70,8 @@ document.write(event.data);
 	if( $_GET["pg"]=="estrategia")$stitle=$strat[$lg];
 	if( $_GET["pg"]=="jobs")$stitle=$jobs[$lg];
 	if( $_GET["pg"]=="descritiva")$stitle=$ufp[$lg]; 
-	if( $_GET["pg"]=="develop")$stitle=$dev[$lg];       
+	if( $_GET["pg"]=="develop")$stitle=$dev[$lg];  
+	if( $_GET["pg"]=="budget")$stitle=$orc[$lg];       
 ?>
 
 <title>Better Planet Mission <?php echo @$stitle; ?></title>
@@ -80,6 +82,7 @@ document.write(event.data);
 .topnav {  
   overflow: hidden;
   background-color: #333; 
+  background-image: linear-gradient(gray, #333);
 }
 
 .topnav a {
@@ -200,8 +203,6 @@ body {
  
 .htr {    
     max-width: 21cm;
-margin-right: 1em;
-    display: table;
 	margin:10px auto;
 	font-family:Arial; 
     color:black;
@@ -228,9 +229,18 @@ margin-right: 1em;
 <body  onresize="onresizeFunction()">		
 <div class="topheader" id="topheaderid">
 <div class="topnav" id="myTopnav">
-	<a href="	<?php echo  $indexp.'?pg=home'.'_&l='.$lg;	?>" class="active">Better Planet Mission</a>
+	<a href="	<?php echo  $indexp.'?pg=home'.'&l='.$lg;	?>" class="active">Better Planet Mission</a>
   
+    <div class="dropdown">
+    <button onclick="dropdownFunction('myDropdown1')" class="dropbtn">Protótipo
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div  id="myDropdown1" class="dropdown-content">
 	<a href="	<?php echo  $indexp.'?pg=descritiva'.'&l='.$lg;	?>  "><?php echo $ufp[$lg];?></a>
+	<a href="	<?php echo  $indexp.'?pg=budget'.'&l='.$lg;	?>  "><?php echo $orc[$lg];?></a>
+    </div>
+  </div>
+  
   
    
 	<a href="	<?php echo  $indexp.'?pg=jobs'.'&l='.$lg;	?>  "><?php echo $jobs[$lg];?></a>
@@ -240,9 +250,11 @@ margin-right: 1em;
   
 	<a href="	<?php echo  $indexp.'?pg=plan'.'&l='.$lg;	?>  "><?php echo $plan[$lg];?></a> 
  
-	<a href="	<?php echo  $indexp.'?pg=fund'.'&l='.$lg;	?>  "><?php echo $fund[$lg];?></a>  
+<!--		<a href="	<?php echo  $indexp.'?pg=fund'.'&l='.$lg;	?>  "><?php echo $fund[$lg];?></a>  -->
 	
 	<a href="	<?php echo  $indexp.'?pg=faq'.'&l='.$lg;	?>  "><?php echo 'FAQ';?></a> 
+	
+<!--	<a href="	<?php echo  $indexp.'?pg=nutri'.'&l='.$lg;	?>  "><?php echo 'Sobre';?></a> -->
  
 	
 	<a href="	<?php echo  $indexp.'?pg='.$_GET['pg'].'&l='.($lg==1?'0':'1') ;	?>  "><?php echo $idiom[$lg];?></a> 
@@ -327,6 +339,13 @@ if( $_GET["pg"]=="jobs"){
 	require "jobs.php";
 	filterHtmlShow("jobsfoot_".$dlg[$lg].".xhtml");
 }
+if( $_GET["pg"]=="home"){ 
+	echo '<br><br>';
+	filterHtmlShow("nutri_".$dlg[$lg].".xhtml");
+}
+
+//https://developers.facebook.com/tools/debug/sharing/?q=http%3A%2F%2Fwww.betterplanetmission.com%2F%3Fl%3D0
+//<meta property="og:description" content=" ">
 ?>
 
 </div>
