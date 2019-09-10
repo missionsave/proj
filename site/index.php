@@ -62,6 +62,19 @@ var sse = new EventSource("index.php");
 sse.onmessage = function(event) {
 document.write(event.data);
 }
+function resizeIframe(obj) {
+    //obj.style.height = obj.contentWindow.document.body.scrollHeight+40 + 'px';
+  var x= document.getElementById("movief").offsetWidth;
+	//alert(x);
+    document.getElementById("movief").style.height = x*(9.0/16.0) + 'px';
+  }
+  
+window.addEventListener("resize", resizemovie);
+function resizemovie() {
+	var x= document.getElementById("movief").offsetWidth;
+	//alert(x);
+    document.getElementById("movief").style.height = x*(9.0/16.0) + 'px';
+  }
 </script>
 
 <?php 	
@@ -81,6 +94,7 @@ document.write(event.data);
 
 
 .topnav {  
+
   overflow: hidden;
   background-color: #333; 
   background-image: linear-gradient(gray, #333);
@@ -102,27 +116,31 @@ document.write(event.data);
 }
 
 .topnav .icon {
+	
 	align:right;
   display: none;
 }
 
 .dropdown {
+	
   float: left; 
   overflow: auto;
 }
 
 .dropdown .dropbtn {
+
   font-size: 17px;    
   border: none;
   outline: none;
   color: white;
   padding: 14px 16px;
-  background-color: inherit;
+	background-color: #333; background-image: linear-gradient(gray, #333);
   font-family: inherit;
   margin: 0;
 }
 
 .dropdown-content {
+		
   display: none;
   position: absolute;
   background-color: #f9f9f9;
@@ -138,11 +156,13 @@ document.write(event.data);
   text-decoration: none;
   display: block;
   text-align: left;
+ 
 }
 
 .topnav a:hover, .dropdown:hover .dropbtn {
   background-color: #555;
   color: white;
+   
 }
 
 .dropdown-content a:hover {
@@ -160,6 +180,7 @@ document.write(event.data);
     display: none;
   }
   .topnav a.icon {
+	 
     float: right;
     display: block;
   }
@@ -171,11 +192,12 @@ document.write(event.data);
     position: absolute;
     right: 0;
     top: 0;
+	
   }
   .topnav.responsive a {
     float: none;
     display: block;
-    text-align: left;
+    text-align: left; z-index: 2000;
   }
   .topnav.responsive .dropdown {float: none;}
   .topnav.responsive .dropdown-content {position: relative;}
@@ -191,7 +213,7 @@ document.write(event.data);
 
  
 html {  
-    margin: auto;
+    margin: auto; 
 }
  
 body {
@@ -279,6 +301,7 @@ body {
 </div>
 
 <div id="nexttotop"  align="center"  style="padding-left:10px; padding-right:10px;">
+
 <script type="text/javascript">
 function onresizeFunction(){
    	var clientHeight = document.getElementById("topheaderid").clientHeight; 
@@ -290,8 +313,16 @@ function onresizeFunction(){
  </div>
  
  
+
+ 
  
 <div  align="center" class="htr" <?php 	if( $_GET["pg"]=="plan") echo 'style="min-width:500px"'; ?> >
+
+ 
+
+
+
+
 <?php //filter htmltext
 function filterHtmlShow($file){
 	$filestr = file_get_contents($file, true);
@@ -303,11 +334,14 @@ function filterHtmlShow($file){
 	
 	$filestr = str_replace('margin-left:2cm; margin-right:2cm;','',$filestr);
 	
-	$filestr = str_replace('<html>','',$filestr);
-	$filestr = str_replace('</html>','',$filestr);
+	//$filestr = str_replace('<html>','',$filestr);
+	//$filestr = str_replace('</html>','',$filestr);
 	
-	$filestr = str_replace('<body>','',$filestr);
-	$filestr = str_replace('</body>','',$filestr);
+	//$filestr = str_replace('<body>','',$filestr);
+	//$filestr = str_replace('</body>','',$filestr);
+	
+	$filestr = str_replace('$video','<iframe id="movief"   onLoad="resizeIframe(this);"    frameborder="0" scrolling="no" width="100%"   src="video.html">
+</iframe>',$filestr);
 	
 	//Calc alinha ao centro
 	$filestr = str_replace('font-size:x-small','margin-left: auto; margin-right: auto;',$filestr);
@@ -354,6 +388,8 @@ if( $_GET["pg"]=="home"){
 
 </body>
 <script>
+
+
 function dropdownFunction() {
   document.getElementById(arguments[0]).classList.toggle("show");
 }
