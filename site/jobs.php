@@ -5,7 +5,49 @@
 <?php //dict
 
 $dlg = array("pt", "en");
-
+$d1 = array("pt", "Name is required")[$lg];
+$d2 = array("pt", "Only letters and white space allowed")[$lg];
+$d3 = array("pt", "Email is required")[$lg];
+$d4 = array("pt", "Invalid email format")[$lg];
+$d5 = array("Estão abertas vagas para estagiários com hipótese de permanência posterior.</p><br><br>
+<b>Faça a sua inscrição aqui:</b>", "Vacancies are open for trainees with a possibility of later permanence. </p> <br> <br>
+<b> Apply here:</b>")[$lg];
+$d6 = array("Nome", "Name")[$lg];
+$d7 = array("Telefone", "Telephone")[$lg];
+$d8 = array("Ano de nascimento", "Year of birth")[$lg];
+$d9 = array("Categoria", "Category")[$lg];
+$d10 = array("Carta de Apresentação", "Presentation letter")[$lg];
+$d11 = array("Obrigado pela sua inscrição", "Thank you for your registration.")[$lg];
+$d12 = array("O seu registo está agora na nossa base de dados.", "Your registration is now in our database.")[$lg];
+$d13 = array("O seu registo está agora alterado.", "Your registration is now changed.")[$lg];
+$d14 = array(" -- selecione -- ", " -- select -- ")[$lg];
+$d15 = array("Selecione o seu CV", "Select your CV")[$lg];
+$d16 = array("Submeter", "Submit")[$lg]; 
+$d17 = array("Engenheiro informático", "Computer engineer")[$lg]; 
+$d18 = array("Engenheiro eletrónico", "Electrical engineer")[$lg]; 
+$d19 = array("Engenheiro mecânico", "Mechanical Engineer")[$lg]; 
+$d20 = array("Engenheiro agrónomo", "Agronomist Engineer")[$lg]; 
+$d21 = array("Serralheiro polivalente", "Multipurpose Locksmith")[$lg]; 
+$d22 = array("Administrativa", "Administrative")[$lg]; 
+$d23 = array("Outro", "Other")[$lg]; 
+// $d24 = array("pt", muda)[$lg]; 
+ 
+ 
+ 
+ 
+ 
+ 
+//Só funciona ate uns 256 caracteres, nem sei se da para traduzir pagina toda, interessante mas também subcarrega o servidor e conexao mais lenta 
+//https://stackoverflow.com/questions/13172660/language-translation-using-php
+function translate($q, $sl, $tl){
+	$var="https://translate.googleapis.com/translate_a/single?client=gtx&ie=UTF-8&oe=UTF-8&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at&sl=".$sl."&tl=".$tl."&hl=hl&q=".urlencode($q); //$var1= $_SERVER['DOCUMENT_ROOT']."/transes.html"; nao percebo pk isto
+    $res= file_get_contents($var);
+    $res=json_decode($res);
+	echo $var; 
+    return $res[0][0][0];
+}
+ //echo translate("Ano de nascimento, O objetivo a curto prazo","pt","en");
+ 
 ?>
 
 <?php
@@ -15,22 +57,22 @@ $name = $email = $gender = $presentention = $phone = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($_POST["name"])) {
-    $nameErr = "Name is required";
+    $nameErr = $d1;
   } else {
     $name = test_input($_POST["name"]);
     // check if name only contains letters and whitespace
     if (!preg_match("/^[a-zA-Z ]*$/",$name)) {
-      $nameErr = "Only letters and white space allowed"; 
+      $nameErr = $d2; 
     }
   }
   
   if (empty($_POST["email"])) {
-    $emailErr = "Email is required";
+    $emailErr = $d3;
   } else {
     $email = test_input($_POST["email"]);
     // check if e-mail address is well-formed
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $emailErr = "Invalid email format"; 
+      $emailErr = $d4; 
     }
   }
     
@@ -69,13 +111,12 @@ if(isset($_POST['submit'])){
 
 <article>
 <p id="jobsid" >
-Estão abertas vagas para estagiários com hipótese de permanência posterior.</p><br><br>
-<b>Faça a sua inscrição aqui:</b></article> <br>
+<?php echo $d5;?></article> <br>
 <div  style="border-style: solid; padding:10px; <?php if( $postOk )echo 'display: none;'; ?> ">
 
 	<form action="<?php echo htmlspecialchars($indexp.'?pg=jobs#jobsid');?>" method="post" enctype="multipart/form-data">
 		 
-		 Nome: <input type="text" name="name" size="25" required="required" value="<?php echo @$name;?>">
+		 <?php echo $d6;?>: <input type="text" name="name" size="25" required="required" value="<?php echo @$name;?>">
 		 <span class="error">* <?php echo @$nameErr;?></span>
 		 <br><br>
 		 
@@ -83,42 +124,42 @@ Estão abertas vagas para estagiários com hipótese de permanência posterior.<
 		 <span class="error">* <?php echo @$emailErr;?></span>
 		 <br><br>
 	
-		Telefone: <input name="phone"   size="20" type="number" required="required"  value="<?php echo @$phone;?>"/>
+		<?php echo $d7;?>: <input name="phone"   size="20" type="number" required="required"  value="<?php echo @$phone;?>"/>
 		<span class="error">* <?php echo @$phoneErr;?></span>
 		<br><br> 
 		
-		Ano de nascimento: <select name="year" id="year" required="required"  >			
+		<?php echo $d8;?>: <select name="year" id="year" required="required"  >			
 		</select>
 		<span class="error">* <?php echo @$birthErr;?></span>
 		<br><br> 
 		
-		Categoria:
+		<?php echo $d9;?>:
 		<select name="job" required="required">
-			<option disabled selected value> -- selecione -- </option>
-			<option value="enginfor">Engenheiro informático</option>
-			<option value="engelect">Engenheiro eletrónico</option>
-			<option value="engmec">Engenheiro mecânico</option>
-			<option value="engagro">Engenheiro agrónomo</option>
-			<option value="serralheiro">Serralheiro / soldador</option>
-			<option value="administrativa">Administrativa</option>
-			<option value="outro">Outro</option>
+			<option disabled selected value><?php echo $d14;?></option>
+			<option value="enginfor"><?php echo $d17;?></option>
+			<option value="engelect"><?php echo $d18;?></option>
+			<option value="engmec"><?php echo $d19;?></option>
+			<option value="engagro"><?php echo $d20;?></option>
+			<option value="serralheiro"><?php echo $d21;?></option>
+			<option value="administrativa"><?php echo $d22;?></option>
+			<option value="outro"><?php echo $d23;?></option>
 		</select>
 		 <span class="error">* <?php echo @$catErr;?></span> 
 		<br><br> 
 		
-		Carta de Apresentação:
+		<?php echo $d10;?>:
 		<span class="error">* <?php echo @$presententionErr;?></span>
 		<br>
 		<textarea style="width:100%; font-family:Arial;" name="presentention" id="presententionid" rows="5" required="required" ></textarea>
 		<br><br>
 		
 		
-		<span style=" <?php echo $cvErr;?>  ">Selecione o seu CV:</span> 
+		<span style=" <?php echo $cvErr;?>  "><?php echo $d15;?>:</span> 
 		<br>
 		<input type="file" name="fileToUpload" id="fileToUpload" />
 		<br><br>
 		
-		<input type="submit" name="submit"  onclick='storedata()' value="Submeter" />
+		<input type="submit" name="submit"  onclick='storedata()' value="<?php echo $d16;?>" />
 	</form>
 </div>
 <script>
@@ -130,7 +171,7 @@ window.onload = function() {
 	//fill year
 	var start = new Date().getFullYear()-65;
 	var end = new Date().getFullYear()-18;
-	var options = "<option disabled selected value> -- selecione -- </option>";
+	var options = "<option disabled selected value> <?php echo $d14;?>  </option>";
 	for(var year = end ; year >start; year--){
 	  options += "<option>"+ year +"</option>";
 	}
@@ -196,7 +237,7 @@ function fileupload($prefix){
 ?>
 <?php
 if( $postOk ){
-	echo "<h2>Obrigado pela sua inscrição</h2>";
+	echo "<h2>".$d11."</h2>";
 	$datai=date('Y-m-d H:i:s');
 	// $data= date('Y-m-d_H_i_s ');
 	// $target_file=fileupload($data.$_POST['name']." "); 
@@ -240,13 +281,13 @@ if( $postOk ){
   
 	$stmt = $db -> prepare($sql);
 	if( $stmt -> execute() ){
-		echo "O seu registo está agora na nossa base de dados.";
+		echo $d12;
 	}else{
 		$sql="update tabJobs set date='".$datai."',name='".$_POST['name']."',phone='".$_POST['phone']."',year='".$_POST['year']."',job='".$_POST['job']."',presentention='".$_POST['presentention']."' where email like '".$_POST['email']."'";
 		 
 		$stmt = $db -> prepare($sql);
 		$stmt -> execute();
-		echo "O seu registo está agora alterado.";
+		echo $d13;
 	}
 	
 	$sql="SELECT * FROM tabJobs where email like '".$_POST['email']."'";
