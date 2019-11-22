@@ -39,7 +39,8 @@ $plan = array("Plano de negócio", "Business plan");
 $fund = array("Fundo de investimento", "Investment fund");
 $ling = array("Idioma", "Language");
 $idiom = array("English", "Português");
-$metas= array("Metas", "Goals");
+$mission= array("Missão", "Mission");
+$fab= array("Fábrica", "Factory");
 
 
 ?>
@@ -278,17 +279,25 @@ body {
 	<a href="	<?php echo  $indexp.'?pg=descritiva'.'&l='.$lg;	?>  "><?php echo $ufp[$lg];?></a>
 	<a href="	<?php echo  $indexp.'?pg=budget'.'&l='.$lg;	?>  "><?php echo $orc[$lg];?></a>
     </div>
-  </div>
+	</div>
   
   
-	<a href="	<?php echo  $indexp.'?pg=metas'.'&l='.$lg;	?>  "><?php echo $metas[$lg];?></a>
+	<a href="	<?php echo  $indexp.'?pg=mission'.'&l='.$lg;	?>  "><?php echo $mission[$lg];?></a>
    
 	<a href="	<?php echo  $indexp.'?pg=jobs'.'&l='.$lg;	?>  "><?php echo $jobs[$lg];?></a>
 	<a href="	<?php echo  $indexp.'?pg=donate'.'&l='.$lg;	?>  "><?php echo $doar[$lg];?></a>
 	<a href="	<?php echo  $indexp.'?pg=develop'.'&l='.$lg;	?>  "><?php echo $dev[$lg];?></a> 
   
-  
+    
+    <div class="dropdown">
+    <button onclick="dropdownFunction('myDropdown2')" class="dropbtn"><?php echo $fab[$lg];?>
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div  id="myDropdown2" class="dropdown-content">
 	<a href="	<?php echo  $indexp.'?pg=plan'.'&l='.$lg;	?>  "><?php echo $plan[$lg];?></a> 
+    </div>
+	</div>
+	
  
 <!--		<a href="	<?php echo  $indexp.'?pg=fund'.'&l='.$lg;	?>  "><?php echo $fund[$lg];?></a>  -->
 	
@@ -363,6 +372,8 @@ function filterHtmlShow($file){
 	//$filestr = str_replace('</body>','',$filestr);
 	
 	$filestr = str_replace('<t video1>','<video controls width="100%"  muted>  <source src="movie.mp4?b" type="video/mp4">Your browser does not support the video tag.</video>',$filestr);
+		
+	$filestr = str_replace('<t video1="">','<video controls width="100%"  muted>  <source src="movie.mp4?b" type="video/mp4">Your browser does not support the video tag.</video>',$filestr);
 	
 	
 	$filestr = str_replace('<t imgdonate>','<img style="float:left; position:relative; height:8.16cm;width:8.724cm; margin:10px;" alt="" src="fometec.jpg"/>',$filestr);
