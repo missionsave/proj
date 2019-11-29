@@ -251,7 +251,24 @@ if( $postOk ){
 	//$target_file= '<a href="'.$target_file.'">'.$target_file.'</a><br>';
 	
 	
-	$db = new PDO("sqlite:"."db.sqlite");
+	//$db = new PDO("sqlite:"."db.sqlite");
+	
+	
+	$servername = "remotemysql.com";
+$username = "GBtyfP4tfL";
+$password = "6ZDvfBKBTt";
+
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=GBtyfP4tfL", $username, $password);
+    // set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Connected successfully";
+    }
+catch(PDOException $e)
+    {
+    echo "Connection failed: " . $e->getMessage();
+    }
+	//$db = new PDO('mysql:host=remotemysql.com:3306;dbname=GBtyfP4tfL','GBtyfP4tfL','6ZDvfBKBTt');
 	
 	$sql="CREATE TABLE IF NOT EXISTS fund (
 	 cid INTEGER PRIMARY KEY,
@@ -299,7 +316,7 @@ if( $postOk ){
 	  $cid= $col['cid'] ;
 	  break;
 	} 
-	$target_file=fileupload($cid." "); 
+	$target_file=fileupload(@$cid." "); 
 	$sql="update tabJobs set  cv='".$target_file."' where email like '".$_POST['email']."'";
 	$stmt = $db -> prepare($sql);
 	$stmt -> execute();
