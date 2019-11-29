@@ -2,7 +2,7 @@
 	
 $servername = "remotemysql.com";
 $username = "GBtyfP4tfL";
-$password = "6ZDvfBKBTt";
+require("mysqlpass.password");
 $dbname = "GBtyfP4tfL";
 
 try {
