@@ -1,4 +1,4 @@
--- MySQL dump 10.17  Distrib 10.3.16-MariaDB, for Win64 (AMD64)
+-- MariaDB dump 10.17  Distrib 10.4.8-MariaDB, for Win64 (AMD64)
 --
 -- Host: remotemysql.com    Database: GBtyfP4tfL
 -- ------------------------------------------------------
@@ -71,6 +71,109 @@ INSERT INTO `fund` VALUES (1,'<?php\r\n	\r\n$servername = \"remotemysql.com\";\r
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tabFases`
+--
+
+DROP TABLE IF EXISTS `tabFases`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tabFases` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Fase` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `FaseEn` tinytext COLLATE utf8_unicode_ci,
+  `Level` double NOT NULL DEFAULT '0',
+  `EstimatedHours` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tabFases`
+--
+
+LOCK TABLES `tabFases` WRITE;
+/*!40000 ALTER TABLE `tabFases` DISABLE KEYS */;
+INSERT INTO `tabFases` VALUES (1,'Implementação do elevador do robot',NULL,1,80),(2,'Implementação do desumidificador',NULL,1,120),(3,'Implementação dos painéis solares',NULL,1,320),(4,'Implementação do robot plantio',NULL,1,320),(5,'Implementação do robot colheita',NULL,1,320),(6,'Implementação da estrutura',NULL,1,80),(7,'Implementação da maquete',NULL,1,160),(8,'Produção da maquete',NULL,1,80),(9,'Produção  da estrutura',NULL,2,80),(10,'Implementação do site',NULL,1,320),(11,'Implementação da confeção de sopa',NULL,1,320);
+/*!40000 ALTER TABLE `tabFases` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tabPontos`
+--
+
+DROP TABLE IF EXISTS `tabPontos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tabPontos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idWorker` int(11) NOT NULL,
+  `idfase` int(11) NOT NULL,
+  `start` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `end` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tabPontos`
+--
+
+LOCK TABLES `tabPontos` WRITE;
+/*!40000 ALTER TABLE `tabPontos` DISABLE KEYS */;
+INSERT INTO `tabPontos` VALUES (1,1,10,'2019-11-29 19:36:00',NULL),(2,1,10,'2019-11-29 19:40:02','2019-11-29 20:40:05'),(3,1,10,'2019-11-29 15:40:40','2019-11-29 19:40:40'),(4,1,10,'2019-11-29 19:12:56','2019-11-29 23:10:00'),(5,1,10,'2019-11-30 01:00:00','2019-12-01 01:30:00'),(6,1,6,'2019-12-02 19:00:00','2019-12-04 19:06:55'),(13,1,6,'2019-12-04 19:24:16','2019-12-04 19:24:31'),(14,1,8,'2019-12-04 19:25:36','2019-12-04 19:25:57'),(15,1,11,'2019-12-04 19:30:31','2019-12-04 19:37:25'),(16,1,4,'2019-12-04 19:37:55','2019-12-04 19:39:01'),(17,1,2,'2019-12-04 19:41:57','2019-12-04 19:42:07'),(18,1,1,'2019-12-04 19:42:28','2019-12-04 19:43:02'),(19,1,5,'2019-12-04 20:19:18','2019-12-04 21:48:10'),(20,1,7,'2019-12-04 21:48:22','2019-12-04 22:01:34'),(21,1,7,'2019-12-04 22:01:44',NULL),(24,2,3,'2019-12-04 22:07:31',NULL);
+/*!40000 ALTER TABLE `tabPontos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tabWorkers`
+--
+
+DROP TABLE IF EXISTS `tabWorkers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tabWorkers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` tinytext COLLATE utf8_unicode_ci NOT NULL,
+  `pass` tinytext COLLATE utf8_unicode_ci NOT NULL,
+  `email` tinytext COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tabWorkers`
+--
+
+LOCK TABLES `tabWorkers` WRITE;
+/*!40000 ALTER TABLE `tabWorkers` DISABLE KEYS */;
+INSERT INTO `tabWorkers` VALUES (1,'Daniel Chanfana Santos','ttt','superbem@gmail.com'),(2,'Miguel','aaa','miguel@gmail.com');
+/*!40000 ALTER TABLE `tabWorkers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `test2`
+--
+
+DROP TABLE IF EXISTS `test2`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `test2` (
+  `a1` int(11) NOT NULL,
+  `a2` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test2`
+--
+
+LOCK TABLES `test2` WRITE;
+/*!40000 ALTER TABLE `test2` DISABLE KEYS */;
+INSERT INTO `test2` VALUES (22,'teste22');
+/*!40000 ALTER TABLE `test2` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `teste`
 --
 
@@ -104,4 +207,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-11-29  0:22:10
+-- Dump completed on 2019-12-04 22:39:36

@@ -31,6 +31,8 @@ $prot = array("Protótipo", "Prototype");
 $ufp = array("Unidade de produção alimentar", "Unit of food production");
 $orc = array("Orçamento", "Budget");
 $jobs = array("Trabalho", "Jobs");
+$hiring = array("Contratação", "Hiring");
+$schedule = array("Ponto", "Schedule");
 $strat = array("Estratégia", "Strategy");
 $contact = array("Contacto", "Contact");
 $doar = array("Doar", "Donate");
@@ -284,7 +286,24 @@ body {
   
 	<a href="	<?php echo  $indexp.'?pg=mission'.'&l='.$lg;	?>  "><?php echo $mission[$lg];?></a>
    
-	<a href="	<?php echo  $indexp.'?pg=jobs'.'&l='.$lg;	?>  "><?php echo $jobs[$lg];?></a>
+	
+	
+	<!-- <a href="	<?php echo  $indexp.'?pg=jobs'.'&l='.$lg;	?>  "><?php echo $jobs[$lg];?></a> -->
+    
+    <div class="dropdown">
+    <button onclick="dropdownFunction('myDropdown3')" class="dropbtn"><?php echo $jobs[$lg];?>
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div  id="myDropdown3" class="dropdown-content">
+	<a href="	<?php echo  $indexp.'?pg=jobs'.'&l='.$lg;	?>  "><?php echo $hiring[$lg];?></a> 
+	<a href="	<?php echo  $indexp.'?pg=ponto'.'&l='.$lg;	?>  "><?php echo $schedule[$lg];?></a> 
+    </div>
+	</div>	
+	
+	
+	
+	
+	
 	<a href="	<?php echo  $indexp.'?pg=donate'.'&l='.$lg;	?>  "><?php echo $doar[$lg];?></a>
 	<a href="	<?php echo  $indexp.'?pg=develop'.'&l='.$lg;	?>  "><?php echo $dev[$lg];?></a> 
   
@@ -419,6 +438,10 @@ if(!file_exists($file))$file= "home_".$dlg[$lg].".html";
 
 if( $_GET["pg"]=="fund"){
 	require	"fund.php";
+	$file="";
+}
+if( $_GET["pg"]=="ponto"){
+	require	"ponto.php";
 	$file="";
 }
 if($file!=""){
