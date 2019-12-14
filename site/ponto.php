@@ -1,3 +1,90 @@
+<?php
+if(!empty(@$_POST['newpassword'])){
+echo 'teste'.@$_POST['newpassword'];
+return;
+}
+?>
+
+
+<!-- 
+Por implementar:
+	password md5 
+
+-->
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script><!-- https://sweetalert2.github.io/ 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.3.3/bootbox.min.js"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+-->
+
+<script>
+//function loadDoc() {
+ 
+ 
+async function loadDoc() {
+try{
+	Swal.mixin({
+	input: 'password',
+	confirmButtonText: 'Next &rarr;',
+	showCancelButton: true,
+	progressSteps: ['1', '2', '3']}).queue([ 'Current password',  'Type new password',  'Re-type new password']).then((result) => {
+	
+	if (result.value[1]!=result.value[2]){
+		Swal.fire('Passwords doesn`t match','', 'error');
+		return;
+	}
+	if (result.value[1]) { 
+		
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "ponto.php", false);
+		xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		var params = 'newpassword='+result.value[1]+'&rnewpassword='+result.value[2];
+		xhttp.send(params);  
+		Swal.fire(xhttp.responseText+' '+result.value[0],'', 'success');
+	}
+})
+}catch(e){
+	// Fail!
+	console.error(e);
+}
+}
+ 
+ 
+// bootbox.prompt({
+    // title: "This is a prompt with a password input!",
+    // inputType: 'password',
+    // callback: function (result) {
+        // console.log(result);
+    // }
+// });	
+	
+// return;
+  // var xhttp = new XMLHttpRequest();
+  // xhttp.open("POST", "ponto.php", false);
+  // xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  // var params = 'newpassword=1';
+  // xhttp.send(params);
+  // alert(xhttp.responseText);
+  // //document.getElementById("demo").innerHTML = xhttp.responseText;
+// }
+</script>
+<?php //dict
+ 
+$d1 = array('<br>Esta tabela é actualizada diariamente<br>', '<br>This table is updated daily<br>')[$lg];
+
+
+?>
+<?php
+ 
+?>
 <style>
 table {
   font-family: arial, sans-serif;
@@ -15,7 +102,7 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
-input[type=text], select {  
+input[type=text], input[type=password], select {  
   margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
@@ -28,8 +115,10 @@ input[type=text], select {
 <?php 
 require("connect.php");
 
-$stmt = $db -> prepare("SELECT tabFases.id,tabFases.Fase, round( Sum( ( UNIX_TIMESTAMP(tabPontos.end)-UNIX_TIMESTAMP(tabPontos.start) )/3600 ),1) AS hoursSpent, tabFases.EstimatedHours, round( Sum( ( UNIX_TIMESTAMP(tabPontos.end)-UNIX_TIMESTAMP(tabPontos.start) )/3600 )/tabFases.EstimatedHours*100,0) as per FROM tabFases LEFT JOIN tabPontos ON tabFases.id = tabPontos.idfase GROUP BY tabFases.Fase, tabFases.EstimatedHours, tabFases.id order by tabFases.Fase asc
-");
+$sql="SELECT tabFases.id,tabFases.Fase,tabFases.FaseEn, round( Sum( ( UNIX_TIMESTAMP(tabPontos.end)-UNIX_TIMESTAMP(tabPontos.start) )/3600 ),1) AS hoursSpent, tabFases.EstimatedHours, round( Sum( ( UNIX_TIMESTAMP(tabPontos.end)-UNIX_TIMESTAMP(tabPontos.start) )/3600 )/tabFases.EstimatedHours*100,0) as per FROM tabFases LEFT JOIN tabPontos ON tabFases.id = tabPontos.idfase GROUP BY tabFases.Fase, tabFases.EstimatedHours, tabFases.id order by tabFases.Fase asc
+";
+//$sql=str_replace("tabFases.Fase","tabFases.FaseEn",$sql);
+$stmt = $db -> prepare($sql);
 $stmt -> execute();
 $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -60,10 +149,10 @@ if( @$_POST['email'] ){
 }
 ?>
 
-<form id='loginForm'  method='post' style=" <?php if( @$postOk )echo 'display: none;'; ?>" >
-    <input id="user-text-field" type="email" name="email" autocomplete="username"  placeholder="email"/>
-	<input id="password-text-field" name="password" type="password" autocomplete="new-password"  placeholder="password"/>
-    <input id='loginButton' type='submit' value="Login">
+<form id='loginForm' autocomplete="on" method='post' style=" <?php if( @$postOk )echo 'display: none;'; ?>" >
+    <input   type="text" name="email"    placeholder="email"/>
+	<input   name="password" type="password"   placeholder="password"/>
+    <input   type='submit' value="Login">
 </form>
 
 
@@ -81,14 +170,22 @@ ORDER BY tabPontos.id desc LIMIT 1;	');
 		//echo @$idfase." | ".$Fase." | ".$id." | ".$start." | ".$end."<br>";
 	}
 
-	
-
-
 	$btfunc="Stop";
 	if(@$end!='' || (@$start=='' && @$end==''))$btfunc="Start";
-	
+
+		
+	//se estiver aberto noutro browser, o stop faz start e o start faz stop
+	$write=1;
+	if((@$_POST['btfunc']=="Start" && $btfunc=="Stop") || (@$_POST['btfunc']=="Stop" && $btfunc=="Start")) {
+		echo "No write"; 
+		session_unset();
+		$write=0;
+		$_POST = array(); 
+		echo '<script>location.reload();</script>';
+	}
+		
 	$faseidsel=@$_POST['faseidsel'];
-	if($faseidsel!='') //é login
+	if($write==1 && $faseidsel!='') //é login
 		if($btfunc=="Stop" ){
 			$stmt3 = $db -> prepare("UPDATE  tabPontos SET idfase=? ,end=NOW() WHERE id=?;");
 			$stmt3 -> execute(array($faseidsel,$id));
@@ -119,7 +216,7 @@ if($btfunc=="Stop"){
 //
 if($faseidsel!='')$idfase=$faseidsel;
 echo '<form  method="post" >';
-echo '<select name="faseidsel" required="required">';
+echo '<select style="max-width: 280px;"; name="faseidsel" required="required">';
 foreach($res as $row){
 	extract($row); 
 	$selv='';
@@ -132,10 +229,11 @@ $_SESSION['email'] = @$_POST['email'];
 $_SESSION['password'] = @$_POST['password'];
 
 //start or end
-echo '<input name="'.$btfunc.'" type="submit" value="'.$btfunc.'">';
+if($btfunc=='Stop')$btc='red'; else $btc='green';
+echo '<input style="color:yellow; background-color: '.$btc.';" name="'.'btfunc'.'" type="submit" value="'.$btfunc.'">';
 
 
-
+echo '';
 
 echo '</form>';
 
@@ -143,8 +241,8 @@ echo '</form>';
 ?>
 
 
-<form  method="post" ><input name="logout" type="submit" value="Logout"> </form>
-
+<form   style="float: left;" method="post" ><input name="logout" type="submit" value="Logout"> </form> 
+<button type="button" onclick="loadDoc()">Change password</button>
 </div>
 
 <table>
@@ -155,11 +253,12 @@ echo '</form>';
     <th>% feito</th>
   </tr> 
 <?php 	
-echo '<br>Esta tabela é actualizada diariamente<br>';
+echo $d1;
 foreach($res as $row){
 	extract($row);
 	if($hoursSpent=='')$hoursSpent=0;
-	echo '<tr><td>'.@$Fase.'</td><td style="text-align:right">'.$hoursSpent.'</td><td style="text-align:right">'.@$EstimatedHours.'</td><td style="text-align:right">'.$per.'</td></tr>';
+	if($_GET['l']==0)$fase=$Fase; else $fase=$FaseEn;
+	echo '<tr><td>'.@$fase.'</td><td style="text-align:right">'.$hoursSpent.'</td><td style="text-align:right">'.@$EstimatedHours.'</td><td style="text-align:right">'.$per.'</td></tr>';
 }
 ?>
 </table> 

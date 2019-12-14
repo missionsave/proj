@@ -9,7 +9,7 @@
 <meta http-equiv="expires" content="0" />
 <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
 <meta http-equiv="pragma" content="no-cache" />
-<link rel="shortcut icon" href="icon.ico">
+<link rel="shortcut icon" href="icon.ico?a">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 
@@ -27,9 +27,10 @@ $lg=0;
 $dlg = array("pt", "en");
 
 $dini = array("Inicio", "Home");
-$prot = array("Protótipo", "Prototype");
+$descritiva = array("Memoria Descritiva", "Descriptive Memory");
 $ufp = array("Unidade de produção alimentar", "Unit of food production");
-$orc = array("Orçamento", "Budget");
+$orc = array("Orçamento do Protótipo", "Prototype Budget");
+$nutri = array("Factos Nutricionais", "Nutrition Facts");
 $jobs = array("Trabalho", "Jobs");
 $hiring = array("Contratação", "Hiring");
 $schedule = array("Ponto", "Schedule");
@@ -107,7 +108,9 @@ function resizemovie() {
 ?>
 
 <title>Better Planet Mission <?php echo @$stitle; ?></title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 <style>
 
 
@@ -115,7 +118,7 @@ function resizemovie() {
 
   overflow: hidden;
   background-color: #333; 
-  background-image: linear-gradient(gray, #333);
+  //background-image: linear-gradient(gray, #333);
 }
 
 .topnav a {
@@ -139,20 +142,21 @@ function resizemovie() {
   display: none;
 }
 
-.dropdown {
+.dropdown1 {
 	
   float: left; 
   overflow: auto;
 }
 
-.dropdown .dropbtn {
+.dropdown1 .dropbtn {
 
   font-size: 17px;    
   border: none;
   outline: none;
   color: white;
   padding: 14px 16px;
-	background-color: #333; background-image: linear-gradient(gray, #333);
+	background-color: #333; 
+	//background-image: linear-gradient(gray, #333);
   font-family: inherit;
   margin: 0;
 }
@@ -177,13 +181,15 @@ function resizemovie() {
  
 }
 
-.topnav a:hover, .dropdown:hover .dropbtn {
+.topnav a:hover, .dropdown1:hover .dropbtn {
   background-color: #555;
-  color: white;
-   
+  color: white;  
 }
+.topnav a:not(.icon):hover { text-decoration: underline; }
+	
 
 .dropdown-content a:hover {
+  text-decoration: underline;
   background-color: #ddd;
   color: black;
 }
@@ -194,7 +200,7 @@ function resizemovie() {
 
 
 @media screen and (max-width: 600px) {
-  .topnav a:not(:first-child), .dropdown .dropbtn {
+  .topnav a:not(:first-child), .dropdown1 .dropbtn {
     display: none;
   }
   .topnav a.icon {
@@ -217,9 +223,9 @@ function resizemovie() {
     display: block;
     text-align: left; z-index: 2000;
   }
-  .topnav.responsive .dropdown {float: none;}
+  .topnav.responsive .dropdown1 {float: none;}
   .topnav.responsive .dropdown-content {position: relative;}
-  .topnav.responsive .dropdown .dropbtn {
+  .topnav.responsive .dropdown1 .dropbtn {
     display: block;
     width: 100%;
     text-align: left;
@@ -260,26 +266,29 @@ body {
   width: 100%;  
 }
 @media screen and (min-width: 600px) {
-	.dropdown:hover .dropdown-content {
+	.dropdown1:hover .dropdown-content {
 	  display: block; 
 	}
 }
 
  	
 </style>
+ 
+ 
 </head>
 <body  onresize="onresizeFunction()">		
 <div class="topheader" id="topheaderid">
 <div class="topnav" id="myTopnav">
 	<a href="	<?php echo  $indexp.'?pg=home'.'&l='.$lg;	?>" class="active">Better Planet Mission</a>
   
-    <div class="dropdown">
-    <button onclick="dropdownFunction('myDropdown1')" class="dropbtn"><?php echo $prot[$lg];?>
+    <div class="dropdown1">
+    <button onclick="dropdownFunction('myDropdown1')" class="dropbtn"><?php echo $ufp[$lg];?>
       <i class="fa fa-caret-down"></i>
     </button>
     <div  id="myDropdown1" class="dropdown-content">
-	<a href="	<?php echo  $indexp.'?pg=descritiva'.'&l='.$lg;	?>  "><?php echo $ufp[$lg];?></a>
+	<a href="	<?php echo  $indexp.'?pg=descritiva'.'&l='.$lg;	?>  "><?php echo $descritiva[$lg];?></a>
 	<a href="	<?php echo  $indexp.'?pg=budget'.'&l='.$lg;	?>  "><?php echo $orc[$lg];?></a>
+	<a href="	<?php echo  $indexp.'?pg=nutri'.'&l='.$lg;	?>  "><?php echo $nutri[$lg];?></a>
     </div>
 	</div>
   
@@ -290,7 +299,7 @@ body {
 	
 	<!-- <a href="	<?php echo  $indexp.'?pg=jobs'.'&l='.$lg;	?>  "><?php echo $jobs[$lg];?></a> -->
     
-    <div class="dropdown">
+    <div class="dropdown1">
     <button onclick="dropdownFunction('myDropdown3')" class="dropbtn"><?php echo $jobs[$lg];?>
       <i class="fa fa-caret-down"></i>
     </button>
@@ -308,7 +317,7 @@ body {
 	<a href="	<?php echo  $indexp.'?pg=develop'.'&l='.$lg;	?>  "><?php echo $dev[$lg];?></a> 
   
     
-    <div class="dropdown">
+    <div class="dropdown1">
     <button onclick="dropdownFunction('myDropdown2')" class="dropbtn"><?php echo $fab[$lg];?>
       <i class="fa fa-caret-down"></i>
     </button>
@@ -330,7 +339,7 @@ body {
 
 
 <!--  
-  <div class="dropdown">
+  <div class="dropdown1">
     <button onclick="dropdownFunction('myDropdown1')" class="dropbtn">tester
       <i class="fa fa-caret-down"></i>
     </button>
@@ -342,7 +351,7 @@ body {
 --> 
  
  
-  <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+  <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()"><b>&#9776;</b></a>
 </div>
 </div>
 
@@ -390,9 +399,9 @@ function filterHtmlShow($file){
 	//$filestr = str_replace('<body>','',$filestr);
 	//$filestr = str_replace('</body>','',$filestr);
 	
-	$filestr = str_replace('<t video1>','<video controls width="100%"  muted>  <source src="movie.mp4?b" type="video/mp4">Your browser does not support the video tag.</video>',$filestr);
+	$filestr = str_replace('<t video1>','<video controls width="100%"  muted>  <source src="movie.mp4?b" type="video/mp4"></video>',$filestr);
 		
-	$filestr = str_replace('<t video1="">','<video controls width="100%"  muted>  <source src="movie.mp4?b" type="video/mp4">Your browser does not support the video tag.</video>',$filestr);
+	$filestr = str_replace('<t video1="">','<video controls width="100%"  muted>  <source src="movie.mp4?b" type="video/mp4"></video>',$filestr);
 	
 	
 	$filestr = str_replace('<t imgdonate>','<img style="float:left; position:relative; height:8.16cm;width:8.724cm; margin:10px;" alt="" src="fometec.jpg"/>',$filestr);
@@ -452,10 +461,10 @@ if( $_GET["pg"]=="jobs"){
 	require "jobs.php";
 	filterHtmlShow("jobsfoot_".$dlg[$lg].".html");
 }
-if( $_GET["pg"]=="home"){ 
-	echo '<br><br>';
-	filterHtmlShow("nutri_".$dlg[$lg].".html");
-}
+// if( $_GET["pg"]=="home"){ 
+	// echo '<br><br>';
+	// filterHtmlShow("nutri_".$dlg[$lg].".html");
+// }
 
 //https://developers.facebook.com/tools/debug/sharing/?q=http%3A%2F%2Fwww.betterplanetmission.com%2F%3Fl%3D0
 //<meta property="og:description" content=" ">

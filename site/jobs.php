@@ -252,24 +252,9 @@ if( $postOk ){
 	
 	
 	//$db = new PDO("sqlite:"."db.sqlite");
-	
-	
-	$servername = "remotemysql.com";
-$username = "GBtyfP4tfL";
-$password = "6ZDvfBKBTt";
+	require("connect.php");
 
-try {
-    $conn = new PDO("mysql:host=$servername;dbname=GBtyfP4tfL", $username, $password);
-    // set the PDO error mode to exception
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected successfully";
-    }
-catch(PDOException $e)
-    {
-    echo "Connection failed: " . $e->getMessage();
-    }
-	//$db = new PDO('mysql:host=remotemysql.com:3306;dbname=GBtyfP4tfL','GBtyfP4tfL','6ZDvfBKBTt');
-	
+/*		
 	$sql="CREATE TABLE IF NOT EXISTS fund (
 	 cid INTEGER PRIMARY KEY,
 	 name TEXT NOT NULL,
@@ -292,7 +277,7 @@ catch(PDOException $e)
 	 cv TEXT
 	);";
 	$db->query($sql);
-	
+*/	
 	
 	$sql="insert into tabJobs (date,name,email,phone,year,job,presentention) values('".$datai."','".$_POST['name']."','".$_POST['email']."','".$_POST['phone']."','".$_POST['year']."','".$_POST['job']."','".$_POST['presentention']."')";
   
