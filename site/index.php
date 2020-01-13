@@ -11,46 +11,45 @@
 <meta http-equiv="pragma" content="no-cache" />
 <link rel="shortcut icon" href="icon.ico?a">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="UTF-8">
 
 
 
 
-<?php
-session_set_cookie_params(3600000,"/");
-session_start(); 
+<?php //This will remove the annoying confirm submission on refresh
+//setcookie("bpm", "cookie_value", time() + (86400 * 30), "/");
+//so a ponto e mais nenhuma muito menos a jobs, pporcausa do fileupload, o $_FILES desaparece
+if(@$_GET['pg']=='ponto' || @$_GET['pg']=='fund'){ //
+
+	 if (!isset($_SESSION)) {
+		session_set_cookie_params(3600000,"/");
+		session_start();
+	}
+
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		$_SESSION['postdata'] = $_POST;
+		unset($_POST);
+		header("Location: ".$_SERVER[REQUEST_URI]);
+		exit;
+	}
+
+	if (@$_SESSION['postdata']){
+		$_POST=$_SESSION['postdata'];
+		unset($_SESSION['postdata']);
+		//print_r($_POST);
+	}
+}
+// 
+// session_start(); 
 header("Cache-Control: no-cache");
 ?>
-<?php //dict
-$lg=0;
 
 
-$dlg = array("pt", "en");
-
-$dini = array("Inicio", "Home");
-$descritiva = array("Memoria Descritiva", "Descriptive Memory");
-$ufp = array("Unidade de produção alimentar", "Unit of food production");
-$orc = array("Orçamento do Protótipo", "Prototype Budget");
-$nutri = array("Factos Nutricionais", "Nutrition Facts");
-$jobs = array("Trabalho", "Jobs");
-$hiring = array("Contratação", "Hiring");
-$schedule = array("Ponto", "Schedule");
-$strat = array("Estratégia", "Strategy");
-$contact = array("Contacto", "Contact");
-$doar = array("Doar", "Donate");
-$dev = array("Desenvolvimento", "Development");
-$plan = array("Plano de negócio", "Business plan");
-$fund = array("Fundo de investimento", "Investment fund");
-$ling = array("Idioma", "Language");
-$idiom = array("English", "Português");
-$mission= array("Missão", "Mission");
-$fab= array("Fábrica", "Factory");
-
-
-?>
 <?php 
+$lg=0;
 if(@$_GET["l"] ==""){
 	$lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-	//echo $lang;
+	 echo $lang.$_SERVER['HTTP_ACCEPT_LANGUAGE'];
 	if($lang=="pt"){
 		$_GET["l"]=0; 	
 	}else{		
@@ -75,12 +74,61 @@ Este projeto começa pela criação de uma máquina-estufa que produz sopa de ba
 }
 ?>
 
+<?php //dict
+
+
+
+$dlg = array("pt", "en");
+
+$dini = array("Inicio", "Home");
+$descritiva = array("Memoria Descritiva", "Descriptive Memory");
+$ufp = array("Unidade de produção alimentar", "Unit of food production");
+$orc = array("Orçamento do Protótipo", "Prototype Budget");
+$nutri = array("Factos Nutricionais", "Nutrition Facts");
+$jobs = array("Trabalho", "Jobs");
+$hiring = array("Contratação", "Hiring");
+$schedule = array("Ponto", "Schedule");
+$strat = array("Estratégia", "Strategy");
+$contact = array("Contacto", "Contact");
+$doar = array("Doar", "Donate");
+$dev = array("Desenvolvimento", "Development");
+$plan = array("Plano de negócio", "Business plan");
+$fund = array("Fundo de investimento", "Investment fund");
+$ling = array("Idioma", "Language");
+$idiom = array("English", "Português");
+$mission= array("Missão", "Mission");
+$fab= array("Fábrica", "Factory");
+
+$pol= array("Este site usa cookies para garantir que você obtenha a melhor experiência conosco", "This website uses cookies to ensure you get the best experience with us.")[$lg];
+$polgo= array("Saber mais", "Learn more")[$lg];
+$polok= array("Entendi", "Got it")[$lg];
+
+
+?>
+
+
+
+<?php //Visitas
+	require('connect.php');
+	$pag=$_GET["pg"].'_'.$dlg[$lg];
+	$stmt = $db -> prepare("SELECT id FROM `tabVisits` WHERE day=CURRENT_DATE and pag=?");
+	$stmt -> execute( array( $pag  ));
+	if($stmt->rowCount()==0){
+		$stmt = $db -> prepare("insert into `tabVisits` (day,pag) values (CURRENT_DATE, ? ) ");
+		$stmt -> execute( array( $pag  ));
+	}else{
+		$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$stmt = $db -> prepare("update `tabVisits` set pag=?, amount=amount+1 where id=? ");
+		$stmt -> execute( array( $pag , $res[0]['id'] ));		
+	}
+?>
 
 <script>
-var sse = new EventSource("index.php");
-sse.onmessage = function(event) {
-document.write(event.data);
-}
+//Não sei pk meti isto aki
+// var sse = new EventSource("index.php");
+// sse.onmessage = function(event) {
+// document.write(event.data);
+// }
 function resizeIframe(obj) {
     //obj.style.height = obj.contentWindow.document.body.scrollHeight+40 + 'px';
   var x= document.getElementById("movief").offsetWidth;
@@ -112,7 +160,7 @@ function resizemovie() {
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 <style>
-
+p  { text-align: justify;}
 
 .topnav {  
 
@@ -237,7 +285,8 @@ function resizemovie() {
 
  
 html {  
-    margin: auto; 
+    margin: auto;
+	text-align: justify;
 }
  
 body {
@@ -276,7 +325,8 @@ body {
  
  
 </head>
-<body  onresize="onresizeFunction()">		
+<body  onresize="onresizeFunction()">	
+	
 <div class="topheader" id="topheaderid">
 <div class="topnav" id="myTopnav">
 	<a href="	<?php echo  $indexp.'?pg=home'.'&l='.$lg;	?>" class="active">Better Planet Mission</a>
@@ -327,7 +377,7 @@ body {
 	</div>
 	
  
-<!--		<a href="	<?php echo  $indexp.'?pg=fund'.'&l='.$lg;	?>  "><?php echo $fund[$lg];?></a>  -->
+		<a href="	<?php echo  $indexp.'?pg=fund'.'&l='.$lg;	?>  "><?php echo $fund[$lg];?></a> 
 	
 	<a href="	<?php echo  $indexp.'?pg=faq'.'&l='.$lg;	?>  "><?php echo 'FAQ';?></a> 
 	
@@ -362,20 +412,20 @@ function onresizeFunction(){
    	var clientHeight = document.getElementById("topheaderid").clientHeight; 
 	document.getElementById('nexttotop').style.paddingTop = clientHeight+'px' ;
 }
-   	onresizeFunction();
+   	onresizeFunction(); 
 </script>
 
 
 
 
-<?php echo '<h2>'.@$stitle.'</h2>'; ?>
+<?php echo '<h2>'.@$stitle.'</h2>';  ?>
  </div>
  
  
 
  
  
-<div  align="center" class="htr" <?php 	if( $_GET["pg"]=="plan") echo 'style="min-width:500px"'; ?> >
+<div    class="htr" <?php 	if( $_GET["pg"]=="plan") echo 'style="min-width:500px"'; ?> >
 
  
 
@@ -405,6 +455,10 @@ function filterHtmlShow($file){
 	
 	
 	$filestr = str_replace('<t imgdonate>','<img style="float:left; position:relative; height:8.16cm;width:8.724cm; margin:10px;" alt="" src="fometec.jpg"/>',$filestr);
+	
+	
+	$filestr = str_replace('http://localhost/proj/fund_pt.html','',$filestr);
+	if(@$_GET['l']==1) $filestr = str_replace('l=0','l=1',$filestr);
 	
 	
 	//corrige o google tradutor 
@@ -446,6 +500,7 @@ $file= $_GET["pg"]."_".$dlg[$lg].".html";
 if(!file_exists($file))$file= "home_".$dlg[$lg].".html";
 
 if( $_GET["pg"]=="fund"){
+	filterHtmlShow("fund_".$dlg[$lg].".html");
 	require	"fund.php";
 	$file="";
 }
@@ -505,6 +560,8 @@ function myFunction() {
 
 </script>
 
- 
-
+<!-- https://www.websitepolicies.com/create/cookie-consent-banner -->
+<link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"/><script src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script><script>window.addEventListener("load", function(){window.wpcc.init({"colors":{"popup":{"background":"#2a5b12","text":"#ffffff","border":"#b5e1a0"},"button":{"background":"#b5e1a0","text":"#000000"}},"content":{"href":"?pg=policycook","target":"_self","button":"<?php echo $polok; ?>","link":"<?php echo $polgo; ?>","message":"<?php echo $pol; ?>"},"margin":"none","transparency":"25","fontsize":"tiny","padding":"none"})});</script>
 </html>
+
+

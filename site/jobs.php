@@ -1,5 +1,8 @@
 <style>
 .error {color: #FF0000;} 
+input {font-size: 16px;}
+button {font-size: 16px;}
+select {font-size: 16px;}
 </style>
   
 <?php //dict
@@ -29,7 +32,8 @@ $d19 = array("Engenheiro mecânico", "Mechanical Engineer")[$lg];
 $d20 = array("Engenheiro agrónomo", "Agronomist Engineer")[$lg]; 
 $d21 = array("Serralheiro polivalente", "Multipurpose Locksmith")[$lg]; 
 $d22 = array("Administrativa", "Administrative")[$lg]; 
-$d23 = array("Outro", "Other")[$lg]; 
+$d23 = array("Outro", "Other")[$lg];  
+$d24 = array("Técnico mecatrónico", "Mechatronic Technician")[$lg]; 
 // $d24 = array("pt", muda)[$lg]; 
  
  
@@ -139,6 +143,7 @@ if(isset($_POST['submit'])){
 			<option value="enginfor"><?php echo $d17;?></option>
 			<option value="engelect"><?php echo $d18;?></option>
 			<option value="engmec"><?php echo $d19;?></option>
+			<option value="tecmec"><?php echo $d24;?></option>
 			<option value="engagro"><?php echo $d20;?></option>
 			<option value="serralheiro"><?php echo $d21;?></option>
 			<option value="administrativa"><?php echo $d22;?></option>
@@ -188,7 +193,8 @@ function storedata() {
 <?php
  
 function fileupload($prefix){
-	if(basename($_FILES["fileToUpload"]["name"])=="")return "";
+	//echo 'fileToUpload '.basename(@$_FILES["fileToUpload"]["name"]);
+	if(basename(@$_FILES["fileToUpload"]["name"])=="")return "";
 	$target_dir = "uploads/";
 	$target_file = $target_dir .$prefix.basename($_FILES["fileToUpload"]["name"]);
 	//$target_file = $target_dir . "test";
@@ -278,30 +284,29 @@ if( $postOk ){
 	);";
 	$db->query($sql);
 */	
-	
-	$sql="insert into tabJobs (date,name,email,phone,year,job,presentention) values('".$datai."','".$_POST['name']."','".$_POST['email']."','".$_POST['phone']."','".$_POST['year']."','".$_POST['job']."','".$_POST['presentention']."')";
-  
-	$stmt = $db -> prepare($sql);
-	if( $stmt -> execute() ){
+	$sql="SELECT * FROM tabJobs where email like ?";
+	$stmt = $db->prepare($sql);
+	$stmt -> execute(array($_POST['email']));
+	$id=0;
+	if($stmt->rowCount()==0){	
+		$sql="insert into tabJobs (date,name,email,phone,year,job,presentention) values('".$datai."','".$_POST['name']."','".$_POST['email']."','".$_POST['phone']."','".$_POST['year']."','".$_POST['job']."','".$_POST['presentention']."')";
+  		$stmt1 = $db -> prepare($sql);
+		$stmt1 -> execute();
+		$stmt -> execute(array($_POST['email']));
+		$res=$stmt->fetchAll(PDO::FETCH_ASSOC);
+		$id=$res[0]['id'];		
 		echo $d12;
 	}else{
-		$sql="update tabJobs set date='".$datai."',name='".$_POST['name']."',phone='".$_POST['phone']."',year='".$_POST['year']."',job='".$_POST['job']."',presentention='".$_POST['presentention']."' where email like '".$_POST['email']."'";
-		 
+		$stmt -> execute(array($_POST['email']));
+		$res=$stmt->fetchAll(PDO::FETCH_ASSOC);
+		$id=$res[0]['id']; 
+		$sql="update tabJobs set date='".$datai."',name='".$_POST['name']."',phone='".$_POST['phone']."',year='".$_POST['year']."',job='".$_POST['job']."',presentention='".$_POST['presentention']."' where email like '".$_POST['email']."'";		 
 		$stmt = $db -> prepare($sql);
 		$stmt -> execute();
 		echo $d13;
 	}
-	
-	$sql="SELECT * FROM tabJobs where email like '".$_POST['email']."'";
-	$stmt = $db->prepare($sql);
-	$stmt -> execute();
-	$list = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	$cid;
-	foreach ($list as $row => $col) {
-	  $cid= $col['cid'] ;
-	  break;
-	} 
-	$target_file=fileupload(@$cid." "); 
+  
+	$target_file=fileupload(@$id." "); 
 	$sql="update tabJobs set  cv='".$target_file."' where email like '".$_POST['email']."'";
 	$stmt = $db -> prepare($sql);
 	$stmt -> execute();
